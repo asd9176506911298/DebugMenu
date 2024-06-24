@@ -46,6 +46,11 @@ namespace DebugMenu
             windowRect = new Rect((Screen.width - width) / 2, (Screen.height - height) / 2, width, height);
         }
 
+        private void onDestroy()
+        {
+            Harmony.UnpatchAll();
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(MenuToggleKey.Value))
@@ -162,17 +167,6 @@ namespace DebugMenu
             }
             GUILayout.EndArea();
             GUI.DragWindow();
-        }
-    }
-
-    public class test
-    {
-        [HarmonyPrefix, HarmonyPatch(typeof(Mortal.Battle.GameLevelManager), "Update")]
-        public static bool modifyDiceNumnber(Mortal.Battle.GameLevelManager __instance)
-        {
-            
-
-            return true;
         }
     }
 }
