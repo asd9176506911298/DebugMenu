@@ -3,32 +3,40 @@ using UnityEngine;
 using BepInEx;
 using BepInEx.Unity.Mono;
 using BepInEx.Configuration;
+using HarmonyLib;
 
 namespace DebugMenu
 {
     [BepInPlugin("DebugMenu", "活俠傳作弊測試選單", "1.0.0")]
     public class Plugin : BaseUnityPlugin
     {
+        public static Plugin Instance { get; private set; }
         private ConfigEntry<KeyCode> MenuToggleKey;
-
-        GUIStyle myStyle;
+        GUIStyle myStyle = new GUIStyle();
+        
 
         private bool showMenu = false;
-        string numberInput = "1";
         private bool isspeed = false;
         private float speed = 1;
+        private string speedInput = "1";
         private bool resource = false;
         private bool day = false;
         private bool testAnimation = false;
         private bool winLose = false;
-        private bool dice = false;
+        public bool dice = false;
+        public int diceNumber = 50;
+        private string diceInput = "50";
 
         private Rect windowRect;
 
         private void Awake()
         {
             Debug.Log("活俠傳作弊測試選單");
+            Instance = this;
+
             MenuToggleKey = Config.Bind<KeyCode>("DebugMenu", "MenuToggleKey", KeyCode.F1, "Menu Toggle Key");
+
+            Harmony.CreateAndPatchAll(typeof(RollDice));
 
             // Initialize window size based on screen dimensions
             float width = Screen.width * 0.5f;
@@ -116,8 +124,7 @@ namespace DebugMenu
 
         public void DoMyWindow(int windowID)
         {
-            myStyle = new GUIStyle();
-            myStyle.fontSize = 18;
+            myStyle.fontSize = 14;
             myStyle.normal.textColor = Color.white;
             GUILayout.BeginArea(new Rect(10, 20, windowRect.width - 20, windowRect.height - 30));
             {
@@ -125,14 +132,17 @@ namespace DebugMenu
                 {
                     isspeed = GUILayout.Toggle(isspeed, "開啟加速");
 
-                    GUILayout.Label("加速速度", myStyle);
-                    numberInput = GUILayout.TextField(numberInput);
-                    float.TryParse(numberInput, out speed);
+                    GUILayout.Label("   加速速度", myStyle);
+                    speedInput = GUILayout.TextField(speedInput);
+                    float.TryParse(speedInput, out speed);
                     resource = GUILayout.Toggle(resource, "修改資源");
                     day = GUILayout.Toggle(day, "測試白天晚上");
                     testAnimation = GUILayout.Toggle(testAnimation, "測試動畫");
                     winLose = GUILayout.Toggle(winLose, "直接勝利/失敗");
                     dice = GUILayout.Toggle(dice, "控制骰子");
+                    GUILayout.Label("    骰子數字", myStyle);
+                    diceInput = GUILayout.TextField(diceInput);
+                    int.TryParse(diceInput, out diceNumber);
                 }
                 GUILayout.EndVertical();
             }

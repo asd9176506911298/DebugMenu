@@ -14,13 +14,14 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\Games\LegendOfMortal\BepInEx\plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,6 +42,10 @@
     </Reference>
     <Reference Include="BepInEx.Unity.Mono">
       <HintPath>assembly-libaries\BepInEx.Unity.Mono.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mortal.Story">
+      <HintPath>assembly-libaries\Mortal.Story.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -71,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RollDice.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
