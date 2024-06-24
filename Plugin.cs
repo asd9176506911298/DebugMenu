@@ -16,7 +16,7 @@ namespace DebugMenu
         private bool showMenu = false;
         string numberInput = "1";
         private bool isspeed = false;
-        private int speed = 1;
+        private float speed = 1;
         private bool resource = false;
         private bool day = false;
         private bool testAnimation = false;
@@ -54,6 +54,11 @@ namespace DebugMenu
                 SetActive("[UI]/TopPanel/StatusPanel/TestPanel", false);
             }
 
+            if (isspeed)
+            {
+                setTimeScale();
+            }
+
             if (day)
             {
                 SetActive("[UI]/MainUI/Layer_1/TestDayButton", true);
@@ -86,6 +91,12 @@ namespace DebugMenu
             }
         }
 
+        private void setTimeScale()
+        {
+            if (speed > 0.0f)
+                Time.timeScale = speed;
+        }
+
         private void SetActive(string path, bool active)
         {
             GameObject obj = GameObject.Find(path);
@@ -116,10 +127,7 @@ namespace DebugMenu
 
                     GUILayout.Label("加速速度", myStyle);
                     numberInput = GUILayout.TextField(numberInput);
-                    if (int.TryParse(numberInput, out speed))
-                    {
-                        Debug.Log(speed);
-                    }
+                    float.TryParse(numberInput, out speed);
                     resource = GUILayout.Toggle(resource, "修改資源");
                     day = GUILayout.Toggle(day, "測試白天晚上");
                     testAnimation = GUILayout.Toggle(testAnimation, "測試動畫");
