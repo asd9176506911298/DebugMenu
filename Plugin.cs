@@ -5,7 +5,6 @@ using BepInEx.Unity.Mono;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Mortal.Battle;
-using System.Reflection;
 
 namespace DebugMenu
 {
@@ -153,7 +152,7 @@ namespace DebugMenu
                     resource = GUILayout.Toggle(resource, "修改資源");
                     day = GUILayout.Toggle(day, "測試白天晚上");
                     testAnimation = GUILayout.Toggle(testAnimation, "測試動畫");
-                    winLose = GUILayout.Toggle(winLose, "直接勝利/失敗");
+                    winLose = GUILayout.Toggle(winLose, "單挑直接勝利/失敗");
                     if (GUILayout.Button("團體戰玩家死亡"))
                         Traverse.Create(GameLevelManager.Instance).Method("ShowGameOver", GameOverType.PlayerDie, true).GetValue();
                     if (GUILayout.Button("團體戰友方獲勝"))
