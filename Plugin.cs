@@ -4,6 +4,8 @@ using BepInEx;
 using BepInEx.Unity.Mono;
 using BepInEx.Configuration;
 using HarmonyLib;
+using Mortal.Battle;
+using System.Reflection;
 
 namespace DebugMenu
 {
@@ -66,6 +68,10 @@ namespace DebugMenu
             {
                 setTimeScale();
             }
+            else
+            {
+                Time.timeScale = 1;
+            }
 
             if (day)
             {
@@ -124,6 +130,7 @@ namespace DebugMenu
 
         public void DoMyWindow(int windowID)
         {
+
             myStyle.fontSize = 14;
             myStyle.normal.textColor = Color.white;
             GUILayout.BeginArea(new Rect(10, 20, windowRect.width - 20, windowRect.height - 30));
@@ -142,12 +149,30 @@ namespace DebugMenu
                     day = GUILayout.Toggle(day, "測試白天晚上");
                     testAnimation = GUILayout.Toggle(testAnimation, "測試動畫");
                     winLose = GUILayout.Toggle(winLose, "直接勝利/失敗");
-                    
+                    if (GUILayout.Button("團體戰玩家死亡"))
+                        Traverse.Create(GameLevelManager.Instance).Method("ShowGameOver", GameOverType.PlayerDie, true).GetValue();
+                    if (GUILayout.Button("團體戰友方獲勝"))
+                        Traverse.Create(GameLevelManager.Instance).Method("ShowGameOver", GameOverType.FriendWin, true).GetValue();
+                    if (GUILayout.Button("團體戰敵方獲勝"))
+                        Traverse.Create(GameLevelManager.Instance).Method("ShowGameOver", GameOverType.EnemyWin, true).GetValue();
+                    if (GUILayout.Button("團體戰時間到"))
+                        Traverse.Create(GameLevelManager.Instance).Method("ShowGameOver", GameOverType.Timeout, true).GetValue();
                 }
                 GUILayout.EndVertical();
             }
             GUILayout.EndArea();
             GUI.DragWindow();
+        }
+    }
+
+    public class test
+    {
+        [HarmonyPrefix, HarmonyPatch(typeof(Mortal.Battle.GameLevelManager), "Update")]
+        public static bool modifyDiceNumnber(Mortal.Battle.GameLevelManager __instance)
+        {
+            
+
+            return true;
         }
     }
 }
