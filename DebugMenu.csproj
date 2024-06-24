@@ -44,6 +44,10 @@
       <HintPath>assembly-libaries\BepInEx.Unity.Mono.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Mortal.Battle">
+      <HintPath>assembly-libaries\Mortal.Battle.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Mortal.Story">
       <HintPath>assembly-libaries\Mortal.Story.dll</HintPath>
       <Private>False</Private>

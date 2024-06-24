@@ -131,18 +131,18 @@ namespace DebugMenu
                 GUILayout.BeginVertical();
                 {
                     isspeed = GUILayout.Toggle(isspeed, "開啟加速");
-
                     GUILayout.Label("   加速速度", myStyle);
                     speedInput = GUILayout.TextField(speedInput);
                     float.TryParse(speedInput, out speed);
-                    resource = GUILayout.Toggle(resource, "修改資源");
-                    day = GUILayout.Toggle(day, "測試白天晚上");
-                    testAnimation = GUILayout.Toggle(testAnimation, "測試動畫");
-                    winLose = GUILayout.Toggle(winLose, "直接勝利/失敗");
                     dice = GUILayout.Toggle(dice, "控制骰子");
                     GUILayout.Label("    骰子數字", myStyle);
                     diceInput = GUILayout.TextField(diceInput);
                     int.TryParse(diceInput, out diceNumber);
+                    resource = GUILayout.Toggle(resource, "修改資源");
+                    day = GUILayout.Toggle(day, "測試白天晚上");
+                    testAnimation = GUILayout.Toggle(testAnimation, "測試動畫");
+                    winLose = GUILayout.Toggle(winLose, "直接勝利/失敗");
+                    
                 }
                 GUILayout.EndVertical();
             }
