@@ -5,6 +5,7 @@ using BepInEx.Unity.Mono;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Mortal.Battle;
+using Mortal.Core;
 
 namespace DebugMenu
 {
@@ -14,7 +15,13 @@ namespace DebugMenu
         public static Plugin Instance { get; private set; }
         private ConfigEntry<KeyCode> MenuToggleKey;
         GUIStyle myStyle = new GUIStyle();
-        
+       
+        private bool showDropdown = false;
+        private int selectedItemIndex = 0;
+        private GameStatType[] gameStatTypes; // Array to hold all enum values
+        private string[] items; // Array to hold string representations of enum values
+        private Vector2 scrollPosition = Vector2.zero;
+        private string currentStatValue = "";
 
         private bool showMenu = false;
         private bool isspeed = false;
@@ -41,8 +48,21 @@ namespace DebugMenu
 
             // Initialize window size based on screen dimensions
             float width = Screen.width * 0.5f;
-            float height = Screen.height * 0.5f;
+            float height = Screen.height * 0.8f;
             windowRect = new Rect((Screen.width - width) / 2, (Screen.height - height) / 2, width, height);
+        }
+
+        private void Start()
+        {
+            gameStatTypes = (GameStatType[])System.Enum.GetValues(typeof(GameStatType));
+            items = new string[gameStatTypes.Length];
+            for (int i = 0; i < gameStatTypes.Length; i++)
+            {
+                items[i] = gameStatTypes[i].ToString();
+            }
+
+            // Initialize currentStatValue with the default value
+            UpdateCurrentStatValue();
         }
 
         private void onDestroy()
@@ -163,9 +183,220 @@ namespace DebugMenu
                         Traverse.Create(GameLevelManager.Instance).Method("ShowGameOver", GameOverType.Timeout, true).GetValue();
                 }
                 GUILayout.EndVertical();
+                GUILayout.BeginHorizontal();
+                {
+                    // ComboBox button
+                    if (GUILayout.Button(items[selectedItemIndex], GUILayout.Width(200)))
+                    {
+                        showDropdown = !showDropdown; // Toggle dropdown visibility
+                    }
+
+
+                    // Dropdown list
+                    if (showDropdown)
+                    {
+                        float dropdownHeight = Mathf.Min(items.Length * 20, 200); // Calculate dropdown height based on item count
+
+                        scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(200), GUILayout.Height(dropdownHeight));
+                        {
+                            for (int i = 0; i < items.Length; i++)
+                            {
+                                if (GUILayout.Button(items[i], GUILayout.ExpandWidth(true)))
+                                {
+                                    selectedItemIndex = i; // Set selected item index
+                                    showDropdown = false; // Close the dropdown
+                                    UpdateCurrentStatValue(); // Update the displayed stat value
+                                }
+                            }
+                        }
+                        GUILayout.EndScrollView();
+                    }
+
+                    // Display selected item text field
+                    currentStatValue = GUILayout.TextField(currentStatValue);
+
+                    // Test button (example)
+                    if (GUILayout.Button("設定數值"))
+                    {
+                        PlayerStatManagerData.Instance.Stats.Set(gameStatTypes[selectedItemIndex], int.Parse(currentStatValue));
+                    }
+                }
+                GUILayout.EndHorizontal();
             }
             GUILayout.EndArea();
             GUI.DragWindow();
+        }
+
+        void UpdateCurrentStatValue()
+        {
+            switch (gameStatTypes[selectedItemIndex])
+            {
+                case GameStatType.體力:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.體力).Value.ToString();
+                    break;
+                case GameStatType.內力:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.內力).Value.ToString();
+                    break;
+                case GameStatType.輕功:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.輕功).Value.ToString();
+                    break;
+                case GameStatType.銀兩:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.銀兩).Value.ToString();
+                    break;
+                case GameStatType.魅力:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.魅力).Value.ToString();
+                    break;
+                case GameStatType.學問:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.學問).Value.ToString();
+                    break;
+                case GameStatType.心理衛生:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.心理衛生).Value.ToString();
+                    break;
+                case GameStatType.命運:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.命運).Value.ToString();
+                    break;
+                case GameStatType.性情:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.性情).Value.ToString();
+                    break;
+                case GameStatType.處世:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.處世).Value.ToString();
+                    break;
+                case GameStatType.修養:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.修養).Value.ToString();
+                    break;
+                case GameStatType.道德:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.道德).Value.ToString();
+                    break;
+                case GameStatType.嘴力:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.嘴力).Value.ToString();
+                    break;
+                case GameStatType.門派規模:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.門派規模).Value.ToString();
+                    break;
+                case GameStatType.門派名聲:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.門派名聲).Value.ToString();
+                    break;
+                case GameStatType.門派人數:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.門派人數).Value.ToString();
+                    break;
+                case GameStatType.向心力:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.向心力).Value.ToString();
+                    break;
+                case GameStatType.鍛造:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.鍛造).Value.ToString();
+                    break;
+                case GameStatType.毒藥:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.毒藥).Value.ToString();
+                    break;
+                case GameStatType.行動次數:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.行動次數).Value.ToString();
+                    break;
+                case GameStatType.個人貢獻度:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.個人貢獻度).Value.ToString();
+                    break;
+                case GameStatType.廚藝:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.廚藝).Value.ToString();
+                    break;
+                case GameStatType.抗毒:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.抗毒).Value.ToString();
+                    break;
+                case GameStatType.抗麻:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.抗麻).Value.ToString();
+                    break;
+                case GameStatType.稱號:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.稱號).Value.ToString();
+                    break;
+                case GameStatType.愛人:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.愛人).Value.ToString();
+                    break;
+                case GameStatType.額外行動次數_1:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.額外行動次數_1).Value.ToString();
+                    break;
+                case GameStatType.娘化:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.娘化).Value.ToString();
+                    break;
+                case GameStatType.陰陽內功:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.陰陽內功).Value.ToString();
+                    break;
+                case GameStatType.防禦:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.防禦).Value.ToString();
+                    break;
+                case GameStatType.變心:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.變心).Value.ToString();
+                    break;
+                case GameStatType.武學點數:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.武學點數).Value.ToString();
+                    break;
+                case GameStatType.全武學點數:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.全武學點數).Value.ToString();
+                    break;
+                case GameStatType.門派資產:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.門派資產).Value.ToString();
+                    break;
+                case GameStatType.門派貢獻:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.門派貢獻).Value.ToString();
+                    break;
+                case GameStatType.全鍛造點數:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.全鍛造點數).Value.ToString();
+                    break;
+                case GameStatType.全毒藥點數:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.全毒藥點數).Value.ToString();
+                    break;
+                case GameStatType.全貢獻度:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.全貢獻度).Value.ToString();
+                    break;
+                case GameStatType.額外行動次數_2:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.額外行動次數_2).Value.ToString();
+                    break;
+                case GameStatType.額外行動次數_3:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.額外行動次數_3).Value.ToString();
+                    break;
+                case GameStatType.武功刀劍:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.武功刀劍).Value.ToString();
+                    break;
+                case GameStatType.武功暗器:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.武功暗器).Value.ToString();
+                    break;
+                case GameStatType.武功拳掌:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.武功拳掌).Value.ToString();
+                    break;
+                case GameStatType.武功腿法:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.武功腿法).Value.ToString();
+                    break;
+                case GameStatType.武功奇門:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.武功奇門).Value.ToString();
+                    break;
+                case GameStatType.武功軟兵器:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.武功軟兵器).Value.ToString();
+                    break;
+                case GameStatType.武功槍棍:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.武功槍棍).Value.ToString();
+                    break;
+                case GameStatType.武功內功:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.武功內功).Value.ToString();
+                    break;
+                case GameStatType.儒學:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.儒學).Value.ToString();
+                    break;
+                case GameStatType.道學:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.道學).Value.ToString();
+                    break;
+                case GameStatType.佛學:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.佛學).Value.ToString();
+                    break;
+                case GameStatType.戰役預設血量:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.戰役預設血量).Value.ToString();
+                    break;
+                case GameStatType.攻擊爆擊:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.攻擊爆擊).Value.ToString();
+                    break;
+                case GameStatType.暗器爆擊:
+                    currentStatValue = PlayerStatManagerData.Instance.Stats.Get(GameStatType.暗器爆擊).Value.ToString();
+                    break;
+                default:
+                    currentStatValue = ""; // Default value if no match found
+                    break;
+            }
         }
     }
 }

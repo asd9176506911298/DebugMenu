@@ -48,6 +48,10 @@
       <HintPath>assembly-libaries\Mortal.Battle.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Mortal.Core">
+      <HintPath>assembly-libaries\Mortal.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Mortal.Story">
       <HintPath>assembly-libaries\Mortal.Story.dll</HintPath>
       <Private>False</Private>
