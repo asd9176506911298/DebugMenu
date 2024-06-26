@@ -31,3 +31,9 @@
 
 ## 使用影片
 https://youtu.be/kBVdjNVJoXA
+
+## 測試介面教學(雷)
+- ch 故事
+- BL 戰役
+- CL 決鬥
+- https://youtu.be/f_IKWodu8u8
