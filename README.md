@@ -25,3 +25,6 @@
 ![](/img/Menu.png)
 ![](/img/winLose.png)
 ![](/img/GroupWinLose.png)
+
+## 使用影片
+https://youtu.be/kBVdjNVJoXA
