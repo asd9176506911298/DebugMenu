@@ -129,12 +129,6 @@ namespace DebugMenu
             }
         }
 
-        private void setTimeScale()
-        {
-            if (speed > 0.0f)
-                Time.timeScale = speed;
-        }
-
         private void SetActive(string path, bool active)
         {
             GameObject obj = GameObject.Find(path);
@@ -181,6 +175,8 @@ namespace DebugMenu
                         Traverse.Create(GameLevelManager.Instance).Method("ShowGameOver", GameOverType.EnemyWin, true).GetValue();
                     if (GUILayout.Button("團體戰時間到"))
                         Traverse.Create(GameLevelManager.Instance).Method("ShowGameOver", GameOverType.Timeout, true).GetValue();
+                    if (GUILayout.Button("標題畫面顯示全按鈕"))
+                        EnableTitleButton();
                 }
                 GUILayout.EndVertical();
                 GUILayout.BeginHorizontal();
@@ -227,7 +223,13 @@ namespace DebugMenu
             GUI.DragWindow();
         }
 
-        void UpdateCurrentStatValue()
+        private void setTimeScale()
+        {
+            if (speed > 0.0f)
+                Time.timeScale = speed;
+        }
+
+        private void UpdateCurrentStatValue()
         {
             switch (gameStatTypes[selectedItemIndex])
             {
@@ -398,5 +400,41 @@ namespace DebugMenu
                     break;
             }
         }
+
+        private void EnableTitleButton()
+        {
+            var title = Traverse.Create(TitleManager.Instance);
+            //title.Method("ShowPanel", title.Field("_testPanel").GetValue(), true);
+            if (title != null)
+            {
+                var chapter = title.Field("_chapter").GetValue<CanvasGroup>();
+                var missions = title.Field("_missions").GetValue<CanvasGroup>();
+                var combat = title.Field("_combat").GetValue<CanvasGroup>();
+                var testPanel = title.Field("_testPanel").GetValue<CanvasGroup>();
+                var previewPanel = title.Field("_previewPanel").GetValue<CanvasGroup>();
+                if (chapter != null)
+                    chapter.gameObject.SetActive(true);
+                if (missions != null)
+                    missions.gameObject.SetActive(true);
+                if (combat != null)
+                    combat.gameObject.SetActive(true);
+                if (testPanel != null)
+                    testPanel.gameObject.SetActive(true);
+                if (previewPanel != null)
+                    previewPanel.gameObject.SetActive(true);
+            }
+
+            GameObject parentObject = GameObject.Find("UI/Layer_1/Buttons");
+            if (parentObject != null)
+            {
+                foreach (Transform child in parentObject.transform)
+                {
+                    // Set each child GameObject active
+                    child.gameObject.SetActive(true);
+                }
+                //title.Method("OpenTestPanel").GetValue();
+            }
+        }
+
     }
 }
