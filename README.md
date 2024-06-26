@@ -16,15 +16,18 @@
 - 直接勝利/失敗
 - 團體戰友方/敵方勝利
 - 玩家狀態數值設定
+- 測試介面
 
 ## 翻譯問題
 - 煉丹點數 = 毒藥點數
 - 總共獲得煉丹點數 = 全毒藥點數
 
 ## 螢幕截圖
+![](/img/testPanel.png)
 ![](/img/Menu.png)
 ![](/img/winLose.png)
 ![](/img/GroupWinLose.png)
+![](/img/resource.png)
 
 ## 使用影片
 https://youtu.be/kBVdjNVJoXA
