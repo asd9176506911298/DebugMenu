@@ -175,7 +175,7 @@ namespace DebugMenu
                         Traverse.Create(GameLevelManager.Instance).Method("ShowGameOver", GameOverType.EnemyWin, true).GetValue();
                     if (GUILayout.Button("團體戰時間到"))
                         Traverse.Create(GameLevelManager.Instance).Method("ShowGameOver", GameOverType.Timeout, true).GetValue();
-                    if (GUILayout.Button("標題畫面顯示全按鈕"))
+                    if (GUILayout.Button("標題畫面顯示全按鈕(按兩次)(不知道會不會影響存檔謹慎使用 使用前備份)"))
                         EnableTitleButton();
                 }
                 GUILayout.EndVertical();
