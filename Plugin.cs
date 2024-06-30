@@ -44,7 +44,7 @@ namespace DebugMenu
 
             MenuToggleKey = Config.Bind<KeyCode>("DebugMenu", "MenuToggleKey", KeyCode.F1, "Menu Toggle Key");
 
-            Harmony.CreateAndPatchAll(typeof(RollDice));
+            Harmony.CreateAndPatchAll(typeof(Patch));
 
             // Initialize window size based on screen dimensions
             float width = Screen.width * 0.5f;
