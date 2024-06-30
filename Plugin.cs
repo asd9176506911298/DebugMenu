@@ -26,6 +26,7 @@ namespace DebugMenu
         private bool showMenu = false;
         private bool isspeed = false;
         private float speed = 1;
+        private bool previousSpeedState = false;
         private string speedInput = "1";
         private bool resource = false;
         private bool day = false;
@@ -72,6 +73,7 @@ namespace DebugMenu
 
         private void Update()
         {
+            Debug.Log($"TimeScale {Time.timeScale}");
             if (Input.GetKeyDown(MenuToggleKey.Value))
             {
                 showMenu = !showMenu;
@@ -88,14 +90,22 @@ namespace DebugMenu
                 SetActive("[UI]/TopPanel/StatusPanel/TestPanel", false);
             }
 
-            if (isspeed)
+
+            if (isspeed && !previousSpeedState)
+            {
+                setTimeScale();
+                previousSpeedState = true;
+            }
+            else if (!isspeed && previousSpeedState)
+            {
+                Time.timeScale = 1;
+                previousSpeedState = false;
+            }
+            else if(isspeed && Time.timeScale != speed)
             {
                 setTimeScale();
             }
-            else
-            {
-                Time.timeScale = 1;
-            }
+            
 
             if (day)
             {
