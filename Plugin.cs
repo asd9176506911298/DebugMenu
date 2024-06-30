@@ -90,7 +90,6 @@ namespace DebugMenu
                 SetActive("[UI]/TopPanel/StatusPanel/TestPanel", false);
             }
 
-
             if (isspeed && !previousSpeedState)
             {
                 setTimeScale();
@@ -106,7 +105,6 @@ namespace DebugMenu
                 setTimeScale();
             }
             
-
             if (day)
             {
                 SetActive("[UI]/MainUI/Layer_1/TestDayButton", true);
