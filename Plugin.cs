@@ -15,7 +15,11 @@ namespace DebugMenu
         public static Plugin Instance { get; private set; }
         private ConfigEntry<KeyCode> MenuToggleKey;
         GUIStyle myStyle = new GUIStyle();
-       
+
+        public bool isPause = false;
+        public bool isStoryPause = false;
+        public bool intro = false;
+
         private bool showDropdown = false;
         private int selectedItemIndex = 0;
         private GameStatType[] gameStatTypes; // Array to hold all enum values
@@ -73,7 +77,12 @@ namespace DebugMenu
 
         private void Update()
         {
-            Debug.Log($"TimeScale {Time.timeScale}");
+            //Debug.Log($"TimeScale {Time.timeScale}");
+            //if (Mortal.Story.StoryManager.Instance != null)
+            //    Debug.Log($"IsPause: {Mortal.Story.StoryManager.Instance.IsStoryPause}");
+            //if (Mortal.Battle.GameLevelManager.Instance != null)
+            //    Debug.Log($"IsPause: {Mortal.Battle.GameLevelManager.Instance.IsPause}");
+
             if (Input.GetKeyDown(MenuToggleKey.Value))
             {
                 showMenu = !showMenu;
@@ -90,21 +99,21 @@ namespace DebugMenu
                 SetActive("[UI]/TopPanel/StatusPanel/TestPanel", false);
             }
 
-            if (isspeed && !previousSpeedState)
+            if (isspeed)
             {
-                setTimeScale();
-                previousSpeedState = true;
+                if (Time.timeScale != 0 && Time.timeScale != speed)
+                {
+                    setTimeScale(speed);
+                }
             }
-            else if (!isspeed && previousSpeedState)
+            else
             {
-                Time.timeScale = 1;
-                previousSpeedState = false;
+                if (Time.timeScale != 0)
+                {
+                    setTimeScale(1);
+                }
             }
-            else if(isspeed && Time.timeScale != speed)
-            {
-                setTimeScale();
-            }
-            
+
             if (day)
             {
                 SetActive("[UI]/MainUI/Layer_1/TestDayButton", true);
@@ -195,7 +204,6 @@ namespace DebugMenu
                         showDropdown = !showDropdown; // Toggle dropdown visibility
                     }
 
-
                     // Dropdown list
                     if (showDropdown)
                     {
@@ -231,10 +239,10 @@ namespace DebugMenu
             GUI.DragWindow();
         }
 
-        private void setTimeScale()
+        private void setTimeScale(float targetSpeed)
         {
             if (speed > 0.0f)
-                Time.timeScale = speed;
+                Time.timeScale = targetSpeed;
         }
 
         private void UpdateCurrentStatValue()
