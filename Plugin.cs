@@ -15,11 +15,6 @@ namespace DebugMenu
         public static Plugin Instance { get; private set; }
         private ConfigEntry<KeyCode> MenuToggleKey;
         GUIStyle myStyle = new GUIStyle();
-
-        public bool isPause = false;
-        public bool isStoryPause = false;
-        public bool intro = false;
-
         private bool showDropdown = false;
         private int selectedItemIndex = 0;
         private GameStatType[] gameStatTypes; // Array to hold all enum values
@@ -110,7 +105,10 @@ namespace DebugMenu
             {
                 if (Time.timeScale != 0)
                 {
-                    setTimeScale(1);
+                    if(Time.timeScale != 10)
+                    {
+                        setTimeScale(1);
+                    }
                 }
             }
 
