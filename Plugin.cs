@@ -164,7 +164,6 @@ namespace DebugMenu
                     GUILayout.Label("    骰子數字", myStyle);
                     diceInput = GUILayout.TextField(diceInput);
                     int.TryParse(diceInput, out diceNumber);
-                    //resource = GUILayout.Toggle(resource, "修改資源");
                     if (GUILayout.Button("開啟/關閉 修改資源"))
                     {
                         if (!GameObject.Find("[UI]/TopPanel/StatusPanel/TestPanel").activeSelf)
