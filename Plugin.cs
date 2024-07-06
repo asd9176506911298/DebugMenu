@@ -9,7 +9,7 @@ using Mortal.Core;
 
 namespace DebugMenu
 {
-    [BepInPlugin("DebugMenu", "活俠傳作弊測試選單", "1.0.0")]
+    [BepInPlugin("DebugMenu", "活俠傳作弊測試選單", "1.0.6")]
     public class Plugin : BaseUnityPlugin
     {
         public static Plugin Instance { get; private set; }
