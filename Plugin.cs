@@ -82,16 +82,16 @@ namespace DebugMenu
                 showMenu = !showMenu;
             }
 
-            if (resource)
-            {
-                SetActive("[UI]/TopPanel/StatusPanel/TestPanel", true);
-                SetActive("[UI]/TopPanel/StatusPanel/TestPanel/Flags", true);
-                SetActive("[UI]/TopPanel/StatusPanel/TestPanel/Flags (1)", true);
-            }
-            else
-            {
-                SetActive("[UI]/TopPanel/StatusPanel/TestPanel", false);
-            }
+            //if (resource)
+            //{
+            //    SetActive("[UI]/TopPanel/StatusPanel/TestPanel", true);
+            //    SetActive("[UI]/TopPanel/StatusPanel/TestPanel/Flags", true);
+            //    SetActive("[UI]/TopPanel/StatusPanel/TestPanel/Flags (1)", true);
+            //}
+            //else
+            //{
+            //    SetActive("[UI]/TopPanel/StatusPanel/TestPanel", false);
+            //}
 
             if (isspeed)
             {
@@ -177,7 +177,18 @@ namespace DebugMenu
                     GUILayout.Label("    骰子數字", myStyle);
                     diceInput = GUILayout.TextField(diceInput);
                     int.TryParse(diceInput, out diceNumber);
-                    resource = GUILayout.Toggle(resource, "修改資源");
+                    //resource = GUILayout.Toggle(resource, "修改資源");
+                    if (GUILayout.Button("開啟/關閉 修改資源"))
+                    {
+                        if (!GameObject.Find("[UI]/TopPanel/StatusPanel/TestPanel").activeSelf)
+                        {
+                            SetActive("[UI]/TopPanel/StatusPanel/TestPanel", true);
+                            SetActive("[UI]/TopPanel/StatusPanel/TestPanel/Flags", true);
+                            SetActive("[UI]/TopPanel/StatusPanel/TestPanel/Flags (1)", true);
+                        }else
+                            SetActive("[UI]/TopPanel/StatusPanel/TestPanel", false);
+
+                    }
                     day = GUILayout.Toggle(day, "測試白天晚上");
                     testAnimation = GUILayout.Toggle(testAnimation, "測試動畫");
                     winLose = GUILayout.Toggle(winLose, "單挑直接勝利/失敗");
