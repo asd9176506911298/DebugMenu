@@ -34,16 +34,15 @@ namespace DebugMenu
         public bool dice = false;
         public int diceNumber = 50;
         private string diceInput = "50";
-
+        
         private Rect windowRect;
 
         private void Awake()
         {
             Debug.Log("活俠傳作弊測試選單");
             Instance = this;
-
+            
             MenuToggleKey = Config.Bind<KeyCode>("DebugMenu", "MenuToggleKey", KeyCode.F1, "Menu Toggle Key");
-
             Harmony.CreateAndPatchAll(typeof(Patch));
 
             // Initialize window size based on screen dimensions

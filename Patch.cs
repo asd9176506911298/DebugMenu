@@ -1,5 +1,11 @@
 ﻿using HarmonyLib;
+using Mortal.Core;
 using UnityEngine;
+using Unity.Rendering;
+using UnityEngine.Rendering;
+using System;
+using BepInEx;
+using System.Security.AccessControl;
 
 namespace DebugMenu
 {
@@ -20,7 +26,7 @@ namespace DebugMenu
         {
             bool isActive = Traverse.Create(__instance).Field("_active").GetValue<bool>();
             if (!Debug.isDebugBuild && isActive)
-            __instance.gameObject.SetActive(false);
+                __instance.gameObject.SetActive(false);
             return false;
         }
 
@@ -29,6 +35,27 @@ namespace DebugMenu
         {
             if (!Debug.isDebugBuild)
                 __instance.gameObject.SetActive(false);
+            return false;
+        }
+
+        //改為測試
+        [HarmonyPostfix, HarmonyPatch(typeof(Debug), "isDebugBuild", MethodType.Getter)]
+        public static void isDebugBuild(ref bool __result)
+        {
+            __result = true;
+        }
+
+        //左下角FPS
+        [HarmonyPrefix, HarmonyPatch(typeof(FpsDisplayController), "Update")]
+        public static bool FpsDisplayController()
+        {
+            return false;
+        }
+
+        //左上角資源監視器Profiler
+        [HarmonyPrefix, HarmonyPatch(typeof(ProfilerRecorderController), "OnGUI")]
+        public static bool ProfilerRecorderController()
+        {
             return false;
         }
     }
