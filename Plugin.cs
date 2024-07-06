@@ -25,9 +25,7 @@ namespace DebugMenu
         private bool showMenu = false;
         private bool isspeed = false;
         private float speed = 1;
-        private bool previousSpeedState = false;
         private string speedInput = "1";
-        private bool resource = false;
         private bool day = false;
         private bool testAnimation = false;
         private bool winLose = false;
@@ -81,17 +79,6 @@ namespace DebugMenu
             {
                 showMenu = !showMenu;
             }
-
-            //if (resource)
-            //{
-            //    SetActive("[UI]/TopPanel/StatusPanel/TestPanel", true);
-            //    SetActive("[UI]/TopPanel/StatusPanel/TestPanel/Flags", true);
-            //    SetActive("[UI]/TopPanel/StatusPanel/TestPanel/Flags (1)", true);
-            //}
-            //else
-            //{
-            //    SetActive("[UI]/TopPanel/StatusPanel/TestPanel", false);
-            //}
 
             if (isspeed)
             {
