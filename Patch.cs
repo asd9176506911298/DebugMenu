@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 using System;
 using BepInEx;
 using System.Security.AccessControl;
+using Mortal.Battle;
 
 namespace DebugMenu
 {
@@ -57,6 +58,14 @@ namespace DebugMenu
         public static bool ProfilerRecorderController()
         {
             return false;
+        }
+
+        //戰役結束顯示滑鼠
+        [HarmonyPostfix, HarmonyPatch(typeof(GameLevelManager), "ContinueGame")]
+        public static void ShowMouse(ref GameLevelManager __instance)
+        {
+            if(__instance.IsGameOver)
+                Traverse.Create(__instance).Method("ShowMouseCursor").GetValue();
         }
     }
 }
