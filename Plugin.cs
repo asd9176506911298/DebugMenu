@@ -9,7 +9,7 @@ using Mortal.Core;
 
 namespace DebugMenu
 {
-    [BepInPlugin("DebugMenu", "活俠傳作弊測試選單", "1.0.7")]
+    [BepInPlugin("DebugMenu", "活俠傳作弊測試選單", "1.0.8")]
     public class Plugin : BaseUnityPlugin
     {
         public static Plugin Instance { get; private set; }
@@ -91,7 +91,7 @@ namespace DebugMenu
             {
                 if (Time.timeScale != 0)
                 {
-                    if(Time.timeScale != 10)
+                    if(Time.timeScale != 10 && Time.timeScale != 2)
                     {
                         setTimeScale(1);
                     }
