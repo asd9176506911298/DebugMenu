@@ -33,16 +33,16 @@ namespace DebugMenu
         public int diceNumber = 50;
         private string diceInput = "50";
         
+        private Vector2Int lastScreenSize;
         private Rect windowRect;
 
         private void Awake()
         {
             Debug.Log("活俠傳作弊測試選單");
             Instance = this;
-            
             MenuToggleKey = Config.Bind<KeyCode>("DebugMenu", "MenuToggleKey", KeyCode.F1, "Menu Toggle Key");
             Harmony.CreateAndPatchAll(typeof(Patch));
-
+            Debug.Log($"Screen.width {Screen.width} Screen.height:{Screen.height}");
             // Initialize window size based on screen dimensions
             float width = Screen.width * 0.5f;
             float height = Screen.height * 0.8f;
@@ -67,8 +67,32 @@ namespace DebugMenu
             Harmony.UnpatchAll();
         }
 
+        void OnScreenSizeChanged(float width, float height)
+        {
+            width *= 0.5f;
+            height *= 0.8f;
+            windowRect = new Rect((Screen.width - width) / 2, (Screen.height - height) / 2, width, height);
+            // Implement your logic here when screen size changes
+            Debug.Log($"Screen size changed to: {width}x{height}");
+
+            // Example: Adjust UI elements or perform other actions based on new screen size
+            // Your code here...
+        }
+
         private void Update()
         {
+            if (Screen.width != lastScreenSize.x || Screen.height != lastScreenSize.y)
+            {
+                // Update lastScreenSize with the current screen dimensions
+                lastScreenSize.x = Screen.width;
+                lastScreenSize.y = Screen.height;
+
+                
+                // Call a method or raise an event indicating screen size change
+                OnScreenSizeChanged(lastScreenSize.x, lastScreenSize.y);
+            }
+
+            //Debug.Log($"Screen.width {Screen.width} Screen.height:{Screen.height}");
             //Debug.Log($"TimeScale {Time.timeScale}");
             //if (Mortal.Story.StoryManager.Instance != null)
             //    Debug.Log($"IsPause: {Mortal.Story.StoryManager.Instance.IsStoryPause}");
